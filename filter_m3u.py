@@ -5,7 +5,7 @@ import os
 # 1. รายการลิงก์ M3U ต้นทางทั้งหมด
 playlist_urls = [
     "https://github.com/babygen-sys/tvplus-playlist/raw/refs/heads/main/K_PRO.m3u8",
-    "https://example.com/playlist2.m3u"
+    
 ]
 
 # 2. กำหนด KEYWORDS สำหรับกรองช่องที่ต้องการ (ถ้าต้องการดึงทุกช่องตามไฟล์ Mapping ให้ปล่อยว่างไว้ [])
