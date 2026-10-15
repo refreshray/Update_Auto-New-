@@ -8,7 +8,7 @@ playlist_urls = [
 ]
 
 # 2. กำหนด KEYWORDS สำหรับกรองช่องที่ต้องการ
-KEYWORDS = ["beIN Sports 1 (Australia)", "beIN Sports 2 (Australia)", "beIN Sports 3 (Australia)"]
+KEYWORDS = ["beIN Sports 1 (Australia)", "beIN Sports 2 (Australia)", "beIN Sports 3 (Australia)","MAX 1","MAX 2"]
 
 # 3. โหลดไฟล์กำหนดค่าแยก (channels_map.json) สำหรับตั้งค่า tvg-id, logo, group เอง
 mapping_file = "channels_map.json"
