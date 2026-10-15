@@ -1,0 +1,23 @@
+{
+  "beinsports1": {
+    "tvg-id": "beINsports1.qa@Australia",
+    "tvg-name": "BEIN SPORTS 1",
+    "tvg-logo": "https://object-streamo.emonaja.com/img/beinsports.png",
+    "group-title": "ช่อง SPORTS - 1",
+    "name": "BEIN Sports 1 (Australia)"
+  },
+  "beinsports2": {
+    "tvg-id": "beINsports2.qa@Australia",
+    "tvg-name": "BEIN SPORTS 2",
+    "tvg-logo": "https://object-streamo.emonaja.com/img/beinsports2.png",
+    "group-title": "ช่อง SPORTS - 1",
+    "name": "BEIN Sports 2 (Australia)"
+  },
+  "beinsports3": {
+    "tvg-id": "beINsports3.qa@Australia",
+    "tvg-name": "BEIN SPORTS 3",
+    "tvg-logo": "https://object-streamo.emonaja.com/img/beinsports3.png",
+    "group-title": "ช่อง SPORTS - 1",
+    "name": "BEIN Sports 3 (Australia)"
+  }
+}
