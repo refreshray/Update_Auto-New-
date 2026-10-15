@@ -9,11 +9,11 @@ https://otte.live.fly.ww.aiv-cdn.net/syd-nitro/live/clients/dash/enc/ghwcl6hv68/
 #KODIPROP:inputstream.adaptive.manifest_type=dash
 #KODIPROP:inputstream.adaptive.license_type=clearkey
 #KODIPROP:inputstream.adaptive.license_key=0b42be2664d7e811d04f3e504e0924c5:ae24090123b8c72ac5404dc152847cb8
-#EXTINF:-1 tvg-id="beINSports2" tvg-name="BEIN SPORTS 2" tvg-logo="https://object-streamo.emonaja.com/img/beinsports2.png" group-title="ช่อง SPORTS - 1", beIN Sports 2 (Australia)
+#EXTINF:-1 tvg-id="beINsports2.qa@Australia" tvg-name="BEIN SPORTS 2" tvg-logo="https://prod-media.beinsports.com/image/b5de4caa4232fc8afacdba10daf5ba7b.128.png?ver=03-06-2025" group-title="ช่อง SPORTS - 1", BEIN Sports 2 (Australia)
 https://otte.live.fly.ww.aiv-cdn.net/syd-nitro/live/clients/dash/enc/8m8cd46i1t/out/v1/83985c68e4174e90a58a1f2c024be4c9/cenc.mpd
 #KODIPROP:inputstreamaddon=inputstream.adaptive
 #KODIPROP:inputstream.adaptive.manifest_type=dash
 #KODIPROP:inputstream.adaptive.license_type=clearkey
 #KODIPROP:inputstream.adaptive.license_key=7995c724a13748ed970840a8ab5bb9b3:67bdaf1e2175b9ff682fcdf0e2354b1e
-#EXTINF:-1 tvg-id="beINSports3" tvg-name="BEIN SPORTS 3" tvg-logo="https://object-streamo.emonaja.com/img/beinsports3.png" group-title="ช่อง SPORTS - 1", beIN Sports 3 (Australia)
+#EXTINF:-1 tvg-id="beINsports3.qa@Australia" tvg-name="BEIN SPORTS 3" tvg-logo="https://prod-media.beinsports.com/image/5c72fa3d1788a0afa9a79ab3ec1f4ef6.128.png?ver=03-06-2025" group-title="ช่อง SPORTS - 1", BEIN Sports 3 (Australia)
 https://a122aivottlinear-a.akamaihd.net/OTTB/syd-nitro/live/clients/dash/enc/q4u5nwaogz/out/v1/18de6d3e65934f3a8de4358e69eab86c/cenc.mpd
