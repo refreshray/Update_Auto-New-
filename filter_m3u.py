@@ -23,7 +23,7 @@ if os.path.exists(mapping_file):
     except Exception as e:
         print(f"Error loading {mapping_file}: {e}")
 
-combined_content = "#EXTM3U\n"
+combined_content = '#EXTM3U url-tvg="https://github.com/iptv-org/epg/raw/refs/heads/master/sites/beinsports.com/beinsports.com_au-en.channels.xml"\n'
 seen_streams = set()
 
 for url in playlist_urls:
