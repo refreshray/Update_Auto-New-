@@ -1,124 +1,60 @@
 import requests
-import json
-import os
 
-# 1. รายการลิงก์ M3U ต้นทางทั้งหมด
-playlist_urls = [
-    "https://github.com/babygen-sys/tvplus-playlist/raw/refs/heads/main/K_PRO.m3u8",
+# 1. URL ต้นทางของคุณ
+M3U_URL = "https://github.com/cattv976/iptv/raw/refs/heads/main/cattv.m3u","https://github.com/babygen-sys/tvplus-playlist/raw/refs/heads/main/K_PRO.m3u8"
+
+# 2. ชื่อช่องที่ต้องการ
+KEYWORDS = [
+    "Samrujlok", "MySci", "Animal Show", "AsianHits", "MonoPlus", 
+    "HBO", "HBOHits", "HBOSignature", "HBOFamily", "Cinemax", 
+    "Rock-Entertainment", "ROCKAction", "Warnertv", "CARTOON NETWORK", 
+    "CARTOONITO", "NICKELODEON", "NICK JR", "Boomerang", "Dreamworks", 
+    "ANIMAX", "Zoo Moo (1080p)", "movies1", "movies2", "movies3", 
+    "movies4", "movies5", "Food Network", "Astro Grandstand", 
+    "Astro Football", "Astro Premier League", "Astro Premier League2","MAX 1","MAX 2"
 ]
 
-# 2. โหลดไฟล์กำหนดค่า (channels_map.json)
-mapping_file = "channels_map.json"
-CUSTOM_CHANNELS = {}
-
-if os.path.exists(mapping_file):
+def main():
     try:
-        with open(mapping_file, "r", encoding="utf-8") as f:
-            CUSTOM_CHANNELS = json.load(f)
+        response = requests.get(M3U_URL, timeout=10)
+        if response.status_code != 200:
+            print(f"ไม่สามารถดาวน์โหลดไฟล์ได้ (Status code: {response.status_code})")
+            return
     except Exception as e:
-        print(f"Error loading {mapping_file}: {e}")
+        print(f"เกิดข้อผิดพลาดในการเชื่อมต่อ: {e}")
+        return
 
-combined_content = '#EXTM3U url-tvg="https://github.com/iptv-org/epg/raw/refs/heads/master/sites/beinsports.com/beinsports.com_au-en.channels.xml"\n'
-seen_streams = set()
+    lines = response.text.splitlines()
+    output_lines = ['#EXTM3U url-tvg="https://github.com/refreshray/epg-auto/raw/refs/heads/main/TV_epg.xml"\n']
+    
+    is_capturing = False # ตัวแปรเช็คว่ากำลังเก็บข้อมูลช่องที่ต้องการอยู่หรือไม่
 
-for url in playlist_urls:
-    try:
-        response = requests.get(url, timeout=10)
-        if response.status_code == 200:
-            lines = response.text.splitlines()
+    for line in lines:
+        clean_line = line.strip()
+        if not clean_line:
+            continue
             
-            i = 0
-            while i < len(lines):
-                line = lines[i].strip()
-                
-                if line.startswith("#EXTINF:"):
-                    extinf_line = line
-                    block_lines = []
-                    stream_url = ""
-                    
-                    # กวาดเก็บเฉพาะคำสั่งระบบด้านบน เช่น #EXTVLCOPT, #KODIPROP (ไม่เอาคอมเมนต์ที่เป็นข้อความคั่น)
-                    look_up = i - 1
-                    while look_up >= 0 and lines[look_up].strip().startswith("#"):
-                        prop_line = lines[look_up].strip()
-                        # กรองเอาเฉพาะคำสั่งตั้งค่าระบบจริง ๆ ไม่เอาข้อความคั่น เช่น # --- ... ---
-                        if prop_line.startswith(("#EXTVLCOPT", "#KODIPROP", "#EXTGRP")):
-                            block_lines.insert(0, prop_line)
-                        look_up -= 1
-                    
-                    # ค้นหาลิงก์สตรีมที่อยู่ด้านล่าง
-                    j = i + 1
-                    while j < len(lines):
-                        next_line = lines[j].strip()
-                        if not next_line:
-                            j += 1
-                            continue
-                        if next_line.startswith("#"):
-                            # ถ้าเจอคอมเมนต์คั่นระหว่างทาง ให้ข้ามไปไม่ต้องเก็บ
-                            j += 1
-                            continue
-                        else:
-                            stream_url = next_line
-                            break
-                        j += 1
-                    
-                    if stream_url:
-                        # ถ้าลิงก์สตรีมมีเครื่องหมาย # นำหน้า (ลิงก์เสีย) ให้ข้ามทันที
-                        if stream_url.startswith("#"):
-                            i = j
-                            continue
-                        
-                        # ดึงชื่อช่องจากต้นทางหลังคอมมา (,) เพื่อเทียบชื่อแบบ Exact Match
-                        parts = extinf_line.split(",")
-                        original_name = parts[-1].strip() if len(parts) > 1 else extinf_line
-                        
-                        # ตรวจสอบชื่อช่องว่ามีอยู่ใน channels_map.json หรือไม่
-                        matched_config = None
-                        for exact_name, config in CUSTOM_CHANNELS.items():
-                            if exact_name.strip().lower() == original_name.strip().lower():
-                                matched_config = config
-                                break
-                        
-                        # ถ้าไม่มีชื่อนี้ใน JSON ให้ข้ามไปทันที
-                        if matched_config is None:
-                            i = j
-                            continue
-                        
-                        # ถ้าผ่านและลิงก์ยังไม่ซ้ำ
-                        if stream_url not in seen_streams:
-                            seen_streams.add(stream_url)
-                            
-                            # เขียนบรรทัดคำสั่งเสริมระบบ (#EXTVLCOPT, #KODIPROP)
-                            for b_line in block_lines:
-                                combined_content += b_line + "\n"
-                            
-                            # ดึงค่าจาก JSON มาใช้ (ถ้าเว้นว่างไว้ จะใช้ค่าเดิมจากต้นฉบับ)
-                            custom_tvg_id = matched_config.get("tvg-id", "").strip()
-                            custom_tvg_name = matched_config.get("tvg-name", "").strip()
-                            custom_tvg_logo = matched_config.get("tvg-logo", "").strip()
-                            custom_group = matched_config.get("group-title", "").strip()
-                            custom_name = matched_config.get("name", "").strip()
-                            
-                            final_name = custom_name if custom_name else original_name
-                            
-                            # ประกอบร่างบรรทัด #EXTINF ใหม่
-                            t_id = custom_tvg_id if custom_tvg_id else ""
-                            t_name = custom_tvg_name if custom_tvg_name else original_name
-                            t_logo = custom_tvg_logo if custom_tvg_logo else ""
-                            t_group = custom_group if custom_group else "General"
-                            
-                            final_extinf = f'#EXTINF:-1 tvg-id="{t_id}" tvg-name="{t_name}" tvg-logo="{t_logo}" group-title="{t_group}", {final_name}'
-                            
-                            combined_content += final_extinf + "\n" + stream_url + "\n"
-                        
-                        i = j
-                i += 1
-        else:
-            print(f"Failed to fetch {url} with status {response.status_code}")
-    except Exception as e:
-        print(f"Error fetching {url}: {e}")
+        # ถ้าเจอหัวข้อช่องใหม่
+        if clean_line.startswith("#EXTINF:"):
+            if any(keyword.lower() in clean_line.lower() for keyword in KEYWORDS):
+                is_capturing = True
+                output_lines.append(clean_line + "\n")
+            else:
+                is_capturing = False
+        
+        # ถ้าอยู่ในสถานะกำลังเก็บข้อมูล (เช่น บรรทัด #EXTVLCOPT หรือ ลิงก์สตรีม)
+        elif is_capturing:
+            output_lines.append(clean_line + "\n")
+            # ถ้าเจอลิงก์สตรีม ถือว่าจบบล็อกของช่องนี้แล้ว ให้ปิดการเก็บสำหรับช่องนี้
+            if clean_line.startswith("http://") or clean_line.startswith("https://"):
+                is_capturing = False
 
-# บันทึกไฟล์ผลลัพธ์
-with open("Update_playlist.m3u", "w", encoding="utf-8") as f:
-    f.write(combined_content)
+    # บันทึกเป็นไฟล์ใหม่
+    output_filename = "Update_playlist.m3u"
+    with open(output_filename, "w", encoding="utf-8") as f:
+        f.writelines(output_lines)
+        
+    print(f"กรองเพลย์ลิสต์เสร็จเรียบร้อย! บันทึกลงไฟล์ {output_filename} แล้ว (พบทั้งหมด {len(output_lines)} บรรทัด)")
 
-print("Successfully filtered and generated playlist!")
+if __name__ == "__main__":
+    main()
