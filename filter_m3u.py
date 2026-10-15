@@ -18,58 +18,56 @@ for url in playlist_urls:
         response = requests.get(url, timeout=10)
         if response.status_code == 200:
             lines = response.text.splitlines()
-            i = 0
-            while i < len(lines):
-                line = lines[i].strip()
-                if line.startswith("#EXTM3U") or not line:
-                    i += 1
+            
+            # เก็บค่าชั่วคราวสำหรับรอบปัจจุบัน
+            current_props = []
+            current_extinf = ""
+            
+            for line in lines:
+                line_str = line.strip()
+                if not line_str or line_str.startswith("#EXTM3U"):
                     continue
                 
-                # เก็บค่าบรรทัดตั้งค่าล่วงหน้า (เช่น #KODIPROP) ที่อยู่ก่อนหน้า #EXTINF
-                prefix_lines = []
-                while i < len(lines) and lines[i].strip().startswith("#") and not lines[i].strip().startswith("#EXTINF:"):
-                    prefix_lines.append(lines[i].strip())
-                    i += 1
+                # ถ้าเจอ #KODIPROP หรือบรรทัดตั้งค่าอื่นๆ เก็บสะสมไว้
+                if line_str.startswith("#KODIPROP:"):
+                    current_props.append(line_str)
                 
-                # เช็กบรรทัดที่เป็น #EXTINF
-                if i < len(lines) and lines[i].strip().startswith("#EXTINF:"):
-                    extinf_line = lines[i].strip()
-                    stream_url = ""
+                # ถ้าเจอ #EXTINF ให้เก็บไว้เป็นข้อมูลช่องหลัก
+                elif line_str.startswith("#EXTINF:"):
+                    current_extinf = line_str
+                    current_props = [] # ล้างค่า prop เก่าถ้ามีอันใหม่ซ้อน
+                
+                # ถ้าบรรทัดนี้ไม่ใช่ขึ้นต้นด้วย # แสดงว่าเป็น URL ของสตรีม
+                elif not line_str.startswith("#") and current_extinf:
+                    stream_url = line_str
                     
-                    # ค้นหาลิงก์สตรีมในบรรทัดถัดไป
-                    j = i + 1
-                    while j < len(lines):
-                        next_line = lines[j].strip()
-                        if next_line and not next_line.startswith("#"):
-                            stream_url = next_line
-                            break
-                        j += 1
+                    # ตรวจสอบ Keyword จากชื่อช่อง (#EXTINF)
+                    parts = current_extinf.split(",")
+                    channel_name = parts[-1].strip() if len(parts) > 1 else current_extinf
                     
-                    if stream_url:
-                        # แยกเอาเฉพาะข้อความหลังคอมมา (,) เพื่อตรวจสอบ Keyword
-                        parts = extinf_line.split(",")
-                        channel_name = parts[-1].strip() if len(parts) > 1 else extinf_line
+                    matched = True
+                    if KEYWORDS:
+                        matched = False
+                        for kw in KEYWORDS:
+                            if kw.lower() in channel_name.lower():
+                                matched = True
+                                break
+                    
+                    # ถ้าผ่านเงื่อนไขและลิงก์ไม่ซ้ำ
+                    if matched and stream_url not in seen_streams:
+                        seen_streams.add(stream_url)
                         
-                        matched = True
-                        if KEYWORDS:
-                            matched = False
-                            for kw in KEYWORDS:
-                                if kw.lower() in channel_name.lower():
-                                    matched = True
-                                    break
+                        # เขียนบรรทัด #KODIPROP (ถ้ามี)
+                        for prop in current_props:
+                            combined_content += prop + "\n"
                         
-                        # ถ้าผ่านเงื่อนไขและลิงก์ไม่ซ้ำ
-                        if matched and stream_url not in seen_streams:
-                            seen_streams.add(stream_url)
-                            
-                            # นำบรรทัด #KODIPROP ทั้งหมดที่เก็บไว้มาต่อก่อนบรรทัดช่อง
-                            for p_line in prefix_lines:
-                                combined_content += p_line + "\n"
-                            
-                            # ต่อด้วยบรรทัดข้อมูลช่องและลิงก์สตรีม
-                            combined_content += extinf_line + "\n" + stream_url + "\n"
-                            i = j
-                i += 1
+                        # เขียนข้อมูลช่องและลิงก์สตรีมที่ถูกต้องคู่กัน
+                        combined_content += current_extinf + "\n" + stream_url + "\n"
+                    
+                    # รีเซ็ตค่าเพื่อรอจับคู่ชุดถัดไป
+                    current_extinf = ""
+                    current_props = []
+                    
         else:
             print(f"Failed to fetch {url} with status {response.status_code}")
     except Exception as e:
@@ -79,4 +77,4 @@ for url in playlist_urls:
 with open("Update_playlist.m3u", "w", encoding="utf-8") as f:
     f.write(combined_content)
 
-print("Successfully filtered, kept properties, and merged!")
+print("Successfully filtered and paired correctly!")
