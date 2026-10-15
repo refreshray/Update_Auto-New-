@@ -8,7 +8,7 @@ playlist_urls = [
 
 # 2. คำค้นหา (Keywords) ที่ต้องการดึง (ถ้าใส่ไว้ บอทจะดึงเฉพาะช่องที่มีชื่อตรงกับคำเหล่านี้)
 # ถ้าอยากให้ดึงทุกช่องโดยไม่กรองคำ ให้ปล่อยรายการนี้ว่างไว้ เช่น KEYWORDS = []
-KEYWORDS = ["BeIN1 SPORTSFHD", "BEIN2 SPORTS FHD", "BEIN3 SPORTS FHD", "SKY MAIN EVENT","beIN Sports 1 (Australia)","beIN Sports 2 (Australia)","beIN Sports 3 (Australia)"]
+KEYWORDS = ["beIN Sports 1 (Australia)","beIN Sports 2 (Australia)","beIN Sports 3 (Australia)"]
 
 combined_content = "#EXTM3U\n"
 seen_streams = set()
