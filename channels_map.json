@@ -14,25 +14,24 @@
     "name": "beIN Sports 2 (Australia)"
   },
   "beIN Sports 3 (Australia)": {
-    "tvg-id": "beINsports2.qa@Australia",
+    "tvg-id": "beINsports3.qa@Australia",
     "tvg-name": "BEIN SPORTS",
     "tvg-logo": "https://raw.githubusercontent.com/refreshray/Update_Auto-New-/main/Logo/MONO2.png",
     "group-title": "ช่อง SPORTS - 1",
     "name": "beIN Sports 3 (Australia)"
   },
-    "MAX 1": {
+  "MAX 1": {
     "tvg-id": "",
     "tvg-name": "MONOMAX",
     "tvg-logo": "https://raw.githubusercontent.com/refreshray/Update_Auto-New-/main/Logo/MONO2.png",
     "group-title": "ช่อง SPORTS - 1",
     "name": "MONOMAX 1"
   },
-    "MAX 2": {
+  "MAX 2": {
     "tvg-id": "",
     "tvg-name": "MONOMAX",
     "tvg-logo": "https://raw.githubusercontent.com/refreshray/Update_Auto-New-/main/Logo/MONO2.png",
     "group-title": "ช่อง SPORTS - 1",
     "name": "MONOMAX 2"
   }
-
 }
