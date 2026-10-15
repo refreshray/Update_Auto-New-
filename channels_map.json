@@ -19,5 +19,19 @@
     "tvg-logo": "https://prod-media.beinsports.com/image/5c72fa3d1788a0afa9a79ab3ec1f4ef6.128.png?ver=03-06-2025",
     "group-title": "ช่อง SPORTS - 1",
     "name": "BEIN Sports 3 (Australia)"
+  },
+    "MAX 1": {
+    "tvg-id": "MAX 1",
+    "tvg-name": "MAX 1",
+    "tvg-logo": "https://raw.githubusercontent.com/refreshray/Update_Auto-New-/main/Logo/MONO1.png",
+    "group-title": "ช่อง SPORTS - 1",
+    "name": "Monomax 1 (Thailand)"
+    },
+    "MAX 1": {
+    "tvg-id": "MAX 2",
+    "tvg-name": "MAX 2",
+    "tvg-logo": "https://raw.githubusercontent.com/refreshray/Update_Auto-New-/main/Logo/MONO2.png",
+    "group-title": "ช่อง SPORTS - 1",
+    "name": "Monomax 2 (Thailand)"
   }
 }
