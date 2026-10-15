@@ -2,8 +2,8 @@ import requests
 
 # 1. รายการลิงก์ M3U ต้นทางทั้งหมด (ใส่ได้หลายแหล่ง)
 playlist_urls = [
-    "https://example.com/playlist1.m3u",
-    "https://example.com/playlist2.m3u"
+    "https://github.com/konanda-sg/Upcoming-and-Live-Sports-Data/raw/refs/heads/main/Sports_data.m3u",
+    "https://github.com/babygen-sys/tvplus-playlist/raw/refs/heads/main/K_PRO.m3u8"
 ]
 
 # 2. คำค้นหา (Keywords) ที่ต้องการดึง (ถ้าใส่ไว้ บอทจะดึงเฉพาะช่องที่มีชื่อตรงกับคำเหล่านี้)
