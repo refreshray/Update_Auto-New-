@@ -81,11 +81,17 @@ for url in playlist_urls:
                             continue
                         
                         # 5. เช็กว่ามีในไฟล์ Custom Mapping (channels_map.json) ไหม เพื่อใช้ค่าที่เราตั้งเอง
+                        # ตรวจสอบกับไฟล์ Custom Mapping (channels_map.json) แบบยืดหยุ่น
                         matched_custom = None
                         for keyword, info in CUSTOM_CHANNELS.items():
-                            if keyword.lower() in original_name or keyword.lower() in extinf_line.lower():
-                                matched_custom = info
-                                break
+                        # แทนที่ช่องว่างและแปลงเป็นตัวพิมพ์เล็กทั้งคู่เพื่อเทียบความถูกต้อง
+                        clean_keyword = keyword.lower().replace(" ", "")
+                        clean_name = original_name.lower().replace(" ", "")
+                        clean_extinf = extinf_line.lower().replace(" ", "")
+                        
+                        if clean_keyword in clean_name or clean_keyword in clean_extinf:
+                            matched_custom = info
+                            break
                         
                         # ถ้าลิงก์ยังไม่ซ้ำ ดำเนินการจัดเก็บ
                         if stream_url not in seen_streams:
