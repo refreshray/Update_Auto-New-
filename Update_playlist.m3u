@@ -17,3 +17,13 @@ https://otte.live.fly.ww.aiv-cdn.net/syd-nitro/live/clients/dash/enc/8m8cd46i1t/
 #KODIPROP:inputstream.adaptive.license_key=7995c724a13748ed970840a8ab5bb9b3:67bdaf1e2175b9ff682fcdf0e2354b1e
 #EXTINF:-1 tvg-id="beINsports3.qa@Australia" tvg-name="BEIN SPORTS 3" tvg-logo="https://prod-media.beinsports.com/image/5c72fa3d1788a0afa9a79ab3ec1f4ef6.128.png?ver=03-06-2025" group-title="ช่อง SPORTS - 1", BEIN Sports 3 (Australia)
 https://a122aivottlinear-a.akamaihd.net/OTTB/syd-nitro/live/clients/dash/enc/q4u5nwaogz/out/v1/18de6d3e65934f3a8de4358e69eab86c/cenc.mpd
+#EXTINF:-1 tvg-id="MAX 1" tvg-name="MAX 1" tvg-logo="https://raw.githubusercontent.com/refreshray/Update_Auto-New-/main/Logo/MONO1.png" group-title="ช่อง SPORTS - 1", Monomax 1 (Thailand)
+https://api.plus-server.sbs/play.php?key=1234&id=1776175&server=_ecdn&source=bontv
+#EXTINF:-1 tvg-id="MAX 2" tvg-name="MAX 2" tvg-logo="https://raw.githubusercontent.com/refreshray/Update_Auto-New-/main/Logo/MONO2.png" group-title="ช่อง SPORTS - 1", Monomax 2 (Thailand)
+https://api.plus-server.sbs/play.php?key=1234&id=1776176&server=_ecdn&source=bontv
+#EXTINF:-1 tvg-id="MAX 1" tvg-name="MAX 1" tvg-logo="https://raw.githubusercontent.com/refreshray/Update_Auto-New-/main/Logo/MONO1.png" group-title="ช่อง SPORTS - 1", Monomax 1 (Thailand)
+https://api.dobon168.com/api/stream/700667596/playlist.m3u8?srv=1&key=kl_9bbe7c7b_37b45b0b653a347ba1439e678bedaad8383705b0
+#EXTINF:-1 tvg-id="MAX 1" tvg-name="MAX 1" tvg-logo="https://raw.githubusercontent.com/refreshray/Update_Auto-New-/main/Logo/MONO1.png" group-title="ช่อง SPORTS - 1", Monomax 1 (Thailand)
+https://doland.babygeniptv.workers.dev/tvplus168/dbl/monomax-sports1/playlist.m3u8
+#EXTINF:-1 tvg-id="MAX 2" tvg-name="MAX 2" tvg-logo="https://raw.githubusercontent.com/refreshray/Update_Auto-New-/main/Logo/MONO2.png" group-title="ช่อง SPORTS - 1", Monomax 2 (Thailand)
+https://doland.babygeniptv.workers.dev/tvplus168/dbl/monomax-sports2/playlist.m3u8
