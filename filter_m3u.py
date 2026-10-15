@@ -10,7 +10,7 @@ playlist_urls = [
 # 2. กำหนด KEYWORDS สำหรับกรองช่องที่ต้องการ
 KEYWORDS = ["beIN Sports 1 (Australia)", "beIN Sports 2 (Australia)", "beIN Sports 3 (Australia)","MAX 1","MAX 2"]
 
-# 3. โหลดไฟล์กำหนดค่าแยก (channels_map.json) สำหรับตั้งค่า tvg-id, logo, group เอง
+# 3. โหลดไฟล์กำหนดค่าแยก (channels_map.json)
 mapping_file = "channels_map.json"
 CUSTOM_CHANNELS = {}
 
@@ -39,11 +39,12 @@ for url in playlist_urls:
                     props = []
                     stream_url = ""
                     
-                    # กวาดหา #KODIPROP รอบๆ บรรทัด
+                    # กวาดหา #KODIPROP หรือบรรทัดเสริมอื่นๆ เช่น #EXTVLCOPT
                     look_up = i - 1
-                    while look_up >= 0 and (lines[look_up].strip().startswith("#KODIPROP") or not lines[look_up].strip()):
-                        if lines[look_up].strip().startswith("#KODIPROP"):
-                            props.insert(0, lines[look_up].strip())
+                    while look_up >= 0 and (lines[look_up].strip().startswith("#") or not lines[look_up].strip()):
+                        prop_line = lines[look_up].strip()
+                        if prop_line and not prop_line.startswith("#EXTINF:"):
+                            props.insert(0, prop_line)
                         look_up -= 1
                     
                     j = i + 1
@@ -52,14 +53,19 @@ for url in playlist_urls:
                         if not next_line:
                             j += 1
                             continue
-                        if next_line.startswith("#KODIPROP:"):
+                        if next_line.startswith("#"):
                             props.append(next_line)
-                        elif not next_line.startswith("#"):
+                        else:
                             stream_url = next_line
                             break
                         j += 1
                     
                     if stream_url:
+                        # 📌 จุดสำคัญ: ถ้า URL ต้นทางมีเครื่องหมาย # นำหน้า (แปลว่าถูกปิดใช้งาน) ให้ข้ามทันที!
+                        if stream_url.startswith("#"):
+                            i = j
+                            continue
+                        
                         # ดึงชื่อช่องต้นทางมาตรวจสอบ
                         parts = extinf_line.split(",")
                         original_name = parts[-1].strip().lower() if len(parts) > 1 else extinf_line.lower()
@@ -73,12 +79,11 @@ for url in playlist_urls:
                                     matched_keyword = True
                                     break
                         
-                        # ถ้าไม่ผ่าน Keyword ให้ข้ามไป
                         if not matched_keyword:
                             i = j
                             continue
                         
-                        # 5. เช็กกับไฟล์ Custom Mapping (channels_map.json) แบบยืดหยุ่น
+                        # 5. เช็กกับไฟล์ Custom Mapping (channels_map.json)
                         matched_custom = None
                         for keyword, info in CUSTOM_CHANNELS.items():
                             clean_keyword = keyword.lower().replace(" ", "")
@@ -89,16 +94,17 @@ for url in playlist_urls:
                                 matched_custom = info
                                 break
                         
-                        # ถ้าลิงก์ยังไม่ซ้ำ ดำเนินการจัดเก็บ
+                        # ถ้าลิงก์ใช้งานได้จริงและยังไม่ซ้ำ
                         if stream_url not in seen_streams:
                             seen_streams.add(stream_url)
                             
-                            # เขียน #KODIPROP
+                            # กรองและเขียนบรรทัดตั้งค่าเสริม (เช่น #KODIPROP, #EXTVLCOPT แต่ไม่เอาอันที่เป็น # ปลอม/ลิงก์เสีย)
                             unique_props = list(dict.fromkeys(props))
                             for prop in unique_props:
-                                combined_content += prop + "\n"
+                                if not prop.startswith("#http"):  # ป้องกันการเอาลิงก์เสียมาใส่ซ้ำ
+                                    combined_content += prop + "\n"
                             
-                            # ถ้าเจอในไฟล์ Mapping ให้ใช้ข้อมูลที่เรากำหนดเอง
+                            # เขียนข้อมูลช่องและลิงก์สตรีมที่ถูกต้อง
                             if matched_custom:
                                 custom_extinf = (
                                     f'#EXTINF:-1 '
@@ -123,4 +129,4 @@ for url in playlist_urls:
 with open("Update_playlist.m3u", "w", encoding="utf-8") as f:
     f.write(combined_content)
 
-print("Successfully filtered by keywords, mapped config, and merged playlist!")
+print("Successfully filtered out disabled links and merged playlist!")
