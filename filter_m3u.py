@@ -5,11 +5,9 @@ import os
 # 1. รายการลิงก์ M3U ต้นทางทั้งหมด
 playlist_urls = [
     "https://github.com/babygen-sys/tvplus-playlist/raw/refs/heads/main/K_PRO.m3u8",
-    
 ]
 
-# 2. กำหนด KEYWORDS สำหรับกรองช่องที่ต้องการ (ถ้าต้องการดึงทุกช่องตามไฟล์ Mapping ให้ปล่อยว่างไว้ [])
-# ตัวอย่าง: อยากดึงเฉพาะช่องที่มีคำว่า bein หรือ hbo
+# 2. กำหนด KEYWORDS สำหรับกรองช่องที่ต้องการ
 KEYWORDS = ["beIN Sports 1 (Australia)", "beIN Sports 2 (Australia)", "beIN Sports 3 (Australia)"]
 
 # 3. โหลดไฟล์กำหนดค่าแยก (channels_map.json) สำหรับตั้งค่า tvg-id, logo, group เอง
@@ -66,7 +64,7 @@ for url in playlist_urls:
                         parts = extinf_line.split(",")
                         original_name = parts[-1].strip().lower() if len(parts) > 1 else extinf_line.lower()
                         
-                        # 4. ตรวจสอบเงื่อนไข KEYWORDS (ถ้ามีการกำหนดค่าไว้)
+                        # 4. ตรวจสอบเงื่อนไข KEYWORDS
                         matched_keyword = True
                         if KEYWORDS:
                             matched_keyword = False
@@ -80,18 +78,16 @@ for url in playlist_urls:
                             i = j
                             continue
                         
-                        # 5. เช็กว่ามีในไฟล์ Custom Mapping (channels_map.json) ไหม เพื่อใช้ค่าที่เราตั้งเอง
-                        # ตรวจสอบกับไฟล์ Custom Mapping (channels_map.json) แบบยืดหยุ่น
+                        # 5. เช็กกับไฟล์ Custom Mapping (channels_map.json) แบบยืดหยุ่น
                         matched_custom = None
                         for keyword, info in CUSTOM_CHANNELS.items():
-                        # แทนที่ช่องว่างและแปลงเป็นตัวพิมพ์เล็กทั้งคู่เพื่อเทียบความถูกต้อง
-                        clean_keyword = keyword.lower().replace(" ", "")
-                        clean_name = original_name.lower().replace(" ", "")
-                        clean_extinf = extinf_line.lower().replace(" ", "")
-                        
-                        if clean_keyword in clean_name or clean_keyword in clean_extinf:
-                            matched_custom = info
-                            break
+                            clean_keyword = keyword.lower().replace(" ", "")
+                            clean_name = original_name.lower().replace(" ", "")
+                            clean_extinf = extinf_line.lower().replace(" ", "")
+                            
+                            if clean_keyword in clean_name or clean_keyword in clean_extinf:
+                                matched_custom = info
+                                break
                         
                         # ถ้าลิงก์ยังไม่ซ้ำ ดำเนินการจัดเก็บ
                         if stream_url not in seen_streams:
@@ -102,7 +98,7 @@ for url in playlist_urls:
                             for prop in unique_props:
                                 combined_content += prop + "\n"
                             
-                            # ถ้าเจอในไฟล์ Mapping ให้ใช้ข้อมูลที่เรากำหนดเอง (เช่น tvg-id, logo ใหม่)
+                            # ถ้าเจอในไฟล์ Mapping ให้ใช้ข้อมูลที่เรากำหนดเอง
                             if matched_custom:
                                 custom_extinf = (
                                     f'#EXTINF:-1 '
@@ -114,13 +110,12 @@ for url in playlist_urls:
                                 )
                                 combined_content += custom_extinf + "\n" + stream_url + "\n"
                             else:
-                                # ถ้าไม่ได้กำหนดใน JSON แต่ผ่าน Keyword ให้ใช้ข้อมูลเดิมตามปกติ
                                 combined_content += extinf_line + "\n" + stream_url + "\n"
                         
                         i = j
                 i += 1
-            else:
-                print(f"Failed to fetch {url} with status {response.status_code}")
+        else:
+            print(f"Failed to fetch {url} with status {response.status_code}")
     except Exception as e:
         print(f"Error fetching {url}: {e}")
 
