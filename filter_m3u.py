@@ -7,11 +7,7 @@ playlist_urls = [
     "https://github.com/babygen-sys/tvplus-playlist/raw/refs/heads/main/K_PRO.m3u8",
 ]
 
-# 2. กำหนด KEYWORDS สำหรับกรองช่องที่ต้องการ
-KEYWORDS = ["beIN Sports 1 (Australia)", "beIN Sports 2 (Australia)", "beIN Sports 3 (Australia)","MAX 1","MAX 2"]
-
-# 2. โหลดไฟล์กำหนดค่า (channels_map.json)
-# สคริปต์จะใช้รายชื่อ (Key) ในไฟล์นี้เป็นตัวกรองหลักทันที ช่องไหนไม่มีใน JSON จะถูกข้ามทั้งหมด
+# 2. โหลดไฟล์กำหนดชื่อช่อง (channels_map.json) เพื่อใช้เป็นรายชื่อที่ต้องการดึง (Exact Match)
 mapping_file = "channels_map.json"
 CUSTOM_CHANNELS = {}
 
@@ -22,6 +18,7 @@ if os.path.exists(mapping_file):
     except Exception as e:
         print(f"Error loading {mapping_file}: {e}")
 
+# กำหนดบรรทัดหัวข้อ M3U พร้อมลิงก์ EPG (ถ้ามี)
 combined_content = '#EXTM3U url-tvg="https://github.com/iptv-org/epg/raw/refs/heads/master/sites/beinsports.com/beinsports.com_au-en.channels.xml"\n'
 seen_streams = set()
 
@@ -37,17 +34,18 @@ for url in playlist_urls:
                 
                 if line.startswith("#EXTINF:"):
                     extinf_line = line
-                    props = []
+                    block_lines = []
                     stream_url = ""
                     
-                    # กวาดหา #KODIPROP หรือบรรทัดเสริมอื่นๆ เช่น #EXTVLCOPT
+                    # กวาดเก็บข้อความหรือคำสั่งทั้งหมดที่อยู่ "ด้านบน" บรรทัด #EXTINF (เช่น #EXTVLCOPT, #KODIPROP)
                     look_up = i - 1
-                    while look_up >= 0 and (lines[look_up].strip().startswith("#") or not lines[look_up].strip()):
+                    while look_up >= 0 and lines[look_up].strip().startswith("#"):
                         prop_line = lines[look_up].strip()
                         if prop_line and not prop_line.startswith("#EXTINF:"):
-                            props.insert(0, prop_line)
+                            block_lines.insert(0, prop_line)
                         look_up -= 1
                     
+                    # ค้นหาลิงก์สตรีมที่อยู่ "ด้านล่าง"
                     j = i + 1
                     while j < len(lines):
                         next_line = lines[j].strip()
@@ -55,55 +53,44 @@ for url in playlist_urls:
                             j += 1
                             continue
                         if next_line.startswith("#"):
-                            props.append(next_line)
+                            block_lines.append(next_line)
                         else:
                             stream_url = next_line
                             break
                         j += 1
                     
                     if stream_url:
-                        # ถ้า URL ต้นทางมีเครื่องหมาย # นำหน้า (ลิงก์เสีย/ถูกปิด) ให้ข้ามทันที
+                        # ถ้าลิงก์สตรีมมีเครื่องหมาย # นำหน้า (ลิงก์เสีย/ถูกปิด) ให้ข้ามทันที
                         if stream_url.startswith("#"):
                             i = j
                             continue
                         
-                        # ดึงชื่อช่องต้นทางมาเช็ก
+                        # ดึงชื่อช่องจากต้นทางหลังคอมมา (,) เพื่อนำมาเทียบชื่อแบบตรงเป๊ะ
                         parts = extinf_line.split(",")
                         original_name = parts[-1].strip() if len(parts) > 1 else extinf_line
                         
-                        # 3. ตรวจสอบชื่อช่องแบบเทียบกับ keys ใน channels_map.json (แบบตรงตัวหรือพิมพ์เล็ก/ใหญ่ไม่ตรงกันได้)
-                        matched_custom = None
-                        for exact_name, info in CUSTOM_CHANNELS.items():
-                            # เปรียบเทียบชื่อแบบตัวพิมพ์เล็ก-ใหญ่ชนกันตรงๆ หรือตัดช่องว่างส่วนเกิน
-                            if exact_name.strip().lower() == original_name.strip().lower():
-                                matched_custom = info
+                        # ตรวจสอบชื่อช่องว่ามีอยู่ใน channels_map.json แบบตรงกันเป๊ะหรือไม่
+                        is_matched = False
+                        for exact_name in CUSTOM_CHANNELS.keys():
+                            if exact_name.strip() == original_name.strip():
+                                is_matched = True
                                 break
                         
-                        # ถ้าชื่อช่องนี้ "ไม่มี" อยู่ใน channels_map.json ให้ข้ามทันที (ไม่ดึงมั่วซั่ว)
-                        if not matched_custom:
+                        # ถ้าชื่อไม่ตรงกับในไฟล์ Map ให้ข้ามทันที
+                        if not is_matched:
                             i = j
                             continue
                         
-                        # ถ้าเจอและลิงก์ยังไม่ซ้ำ
+                        # ถ้าผ่านและลิงก์ยังไม่ซ้ำ ดำเนินการคัดลอกตามต้นฉบับ
                         if stream_url not in seen_streams:
                             seen_streams.add(stream_url)
                             
-                            # กรองบรรทัดตั้งค่าเสริม
-                            unique_props = list(dict.fromkeys(props))
-                            for prop in unique_props:
-                                if not prop.startswith("#http"):
-                                    combined_content += prop + "\n"
+                            # เขียนบรรทัดเสริมทั้งหมดตามต้นฉบับ (เช่น #EXTVLCOPT, #KODIPROP)
+                            for b_line in block_lines:
+                                combined_content += b_line + "\n"
                             
-                            # สร้างบรรทัด #EXTINF ใหม่ตามข้อมูลที่เราตั้งไว้ใน JSON
-                            custom_extinf = (
-                                f'#EXTINF:-1 '
-                                f'tvg-id="{matched_custom.get("tvg-id", "")}" '
-                                f'tvg-name="{matched_custom.get("tvg-name", "")}" '
-                                f'tvg-logo="{matched_custom.get("tvg-logo", "")}" '
-                                f'group-title="{matched_custom.get("group-title", "General")}", '
-                                f'{matched_custom.get("name", original_name)}'
-                            )
-                            combined_content += custom_extinf + "\n" + stream_url + "\n"
+                            # เขียนบรรทัด #EXTINF และลิงก์สตรีมตามต้นฉบับเดิม
+                            combined_content += extinf_line + "\n" + stream_url + "\n"
                         
                         i = j
                 i += 1
@@ -116,4 +103,4 @@ for url in playlist_urls:
 with open("Update_playlist.m3u", "w", encoding="utf-8") as f:
     f.write(combined_content)
 
-print("Successfully filtered by exact channel names from JSON!")
+print("Successfully copied exact channels and filtered out broken links!")
