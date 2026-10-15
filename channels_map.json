@@ -1,37 +1,16 @@
 {
   "beIN Sports 1 (Australia)": {
     "tvg-id": "beINsports1.qa@Australia",
-    "tvg-name": "BEIN SPORTS 1",
-    "tvg-logo": "https://prod-media.beinsports.com/image/a5dc8600e76af1e1d3b58c569580713e.128.png?ver=03-06-2025",
-    "group-title": "ช่อง SPORTS - 1",
-    "name": "BEIN Sports 1 (Australia)"
-  },
-  "BEIN Sports 2 (Australia)": {
-    "tvg-id": "beINsports2.qa@Australia",
-    "tvg-name": "BEIN SPORTS 2",
-    "tvg-logo": "https://prod-media.beinsports.com/image/b5de4caa4232fc8afacdba10daf5ba7b.128.png?ver=03-06-2025",
-    "group-title": "ช่อง SPORTS - 1",
-    "name": "BEIN Sports 2 (Australia)"
-  },
-  "BEIN Sports 3 (Australia)": {
-    "tvg-id": "beINsports3.qa@Australia",
-    "tvg-name": "BEIN SPORTS 3",
-    "tvg-logo": "https://prod-media.beinsports.com/image/5c72fa3d1788a0afa9a79ab3ec1f4ef6.128.png?ver=03-06-2025",
-    "group-title": "ช่อง SPORTS - 1",
-    "name": "BEIN Sports 3 (Australia)"
-  },
-    "MAX 1": {
-    "tvg-id": "MAX 1",
-    "tvg-name": "MAX 1",
+    "tvg-name": "BEIN SPORTS",
     "tvg-logo": "https://raw.githubusercontent.com/refreshray/Update_Auto-New-/main/Logo/MONO1.png",
     "group-title": "ช่อง SPORTS - 1",
-    "name": "Monomax 1 (Thailand)"
-    },
-    "MAX 2": {
-    "tvg-id": "MAX 2",
-    "tvg-name": "MAX 2",
+    "name": "beIN Sports 1 (Australia)"
+  },
+  "beIN Sports 2 (Australia)": {
+    "tvg-id": "beINsports2.qa@Australia",
+    "tvg-name": "BEIN SPORTS",
     "tvg-logo": "https://raw.githubusercontent.com/refreshray/Update_Auto-New-/main/Logo/MONO2.png",
     "group-title": "ช่อง SPORTS - 1",
-    "name": "Monomax 2 (Thailand)"
+    "name": "beIN Sports 2 (Australia)"
   }
 }
