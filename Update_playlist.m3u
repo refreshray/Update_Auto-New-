@@ -160,6 +160,10 @@ https://udn-streamer1.cdn.3bbtv.com:8443/3bb/live/107/107.mpd
 #KODIPROP:inputstream.adaptive.license_type=clearkey
 #KODIPROP:inputstream.adaptive.license_key=072eeb02f6744f838fcc8f0ef36b312e:b797c12f2dd64728aae23fd3c8ef275c
 https://udn-streamer1.cdn.3bbtv.com:8443/3bb/live/109/109.mpd
+#EXTINF:-1 tvg-id="" tvg-logo="https://cdn.prod.website-files.com/67ad5259c6e804a40b4bae5b/67ad5259c6e804a40b4baf29_ENT_LOGO_GOLD_NoShadow.webp" group-title="ช่องบันเทิง",Rock-Entertainment
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36
+#EXTVLCOPT:http-referrer=https://aisplay.ais.th/
+https://edge-1.m-fixer.net:8092/stream/ais/rock-entertainment/master.m3u8
 #EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/babygen-sys/yut/main/Boomerang_2025.png" group-title="ช่องการ์ตูน",Boomerang
 http://103.245.166.221/mvtv.php?id=153
 #EXTINF:-1 tvg-logo="https://gigatv.3bbtv.co.th/wp-content/themes/changwattana/assets/channel/106.png" group-title="ช่องการ์ตูน",HBO family
@@ -168,4 +172,6 @@ http://103.245.166.221/mvtv.php?id=153
 #KODIPROP:inputstream.adaptive.license_key=07b138f30ad3441ca5a2f476e550af25:826ee4deef4b45cfafd5f79a591b15c6
 https://udn-streamer1.cdn.3bbtv.com:8443/3bb/live/106/106.mpd
 #EXTINF:-1 tvg-logo="https://static.wikia.nocookie.net/tvfanon6528/images/f/f9/Asian_Food_Network_%282019-.n.v.%29.png/revision/latest/thumbnail/width/360/height/360?cb=20191208173205" group-title="ช่องสารคดี",Asian Food Network
-https://api.plus-server.sbs/play.php?key=1234&id=1776054&server=_ecdn&source=bontv
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36
+#EXTVLCOPT:http-referrer=https://aisplay.ais.th/
+https://edge-1.m-fixer.net:8092/stream/ais/asianfoodnetwork/master.m3u8
