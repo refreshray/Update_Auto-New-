@@ -134,6 +134,10 @@ http://151.80.18.177:86/Nickelodeon_Junior/index.m3u8
 #EXTVLCOPT:http-origin=https://canale-tv.net
 #EXTVLCOPT:http-referrer=https://canale-tv.net/
 https://galandriel1.thobias11.cfd/nicjr/usergendxl2c8nd.m3u8
+#EXTINF:-1 tvg-logo="https://upload.wikimedia.org/wikipedia/commons/5/5a/Astro_Football_%282024%29.png?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=original" group-title="ช่อง SPORTS - 1",astro football
+https://api.plus-server.sbs/play.php?key=1234&id=1775978&server=_ecdn&source=bontv
+#EXTINF:-1 tvg-logo="https://upload.wikimedia.org/wikipedia/commons/b/be/Astro_Premier_League_2_%282024%29.png?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=original" group-title="ช่อง SPORTS - 1",astro premier league 2
+https://api.plus-server.sbs/play.php?key=1234&id=1775976&server=_ecdn&source=bontv
 #EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/babygen-sys/yut/main/max1.png" group-title="ดูสดฟุตบอลลีก",MAX 1
 #EXTVLCOPT:network-caching=1000
 https://api.plus-server.sbs/play.php?key=1234&id=1776175&server=_ecdn&source=bontv
@@ -165,7 +169,8 @@ https://udn-streamer1.cdn.3bbtv.com:8443/3bb/live/109/109.mpd
 #EXTVLCOPT:http-referrer=https://aisplay.ais.th/
 https://edge-1.m-fixer.net:8092/stream/ais/rock-entertainment/master.m3u8
 #EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/babygen-sys/yut/main/Boomerang_2025.png" group-title="ช่องการ์ตูน",Boomerang
-http://103.245.166.221/mvtv.php?id=153
+#EXTVLCOPT:http-user-agent=libmpv
+http://3bb.engatetv.com:25461/live/hstn/line/25.m3u8
 #EXTINF:-1 tvg-logo="https://gigatv.3bbtv.co.th/wp-content/themes/changwattana/assets/channel/106.png" group-title="ช่องการ์ตูน",HBO family
 #KODIPROP:inputstream.adaptive.manifest_type=mpd
 #KODIPROP:inputstream.adaptive.license_type=clearkey
